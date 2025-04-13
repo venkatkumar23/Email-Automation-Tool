@@ -69,7 +69,7 @@ Best regards,
 Venkat Kumar Meda
 +91 9618367367
 venkatkumarmeda23@gmail.com
-LinkedIn: https://www.linkedin.com/in/venkat-kumar-meda/
+LinkedIn: https://www.linkedin.com/in/venkat-kumar-meda-8710b5266/
 GitHub: https://github.com/venkatkumar23
     """
     return email_body
@@ -104,7 +104,7 @@ Best regards,
 Venkat Kumar Meda
 +91 9618367367
 venkatkumarmeda23@gmail.com
-LinkedIn: https://www.linkedin.com/in/venkat-kumar-meda/
+LinkedIn: https://www.linkedin.com/in/venkat-kumar-meda-8710b5266/
     """
     return email_body
 
