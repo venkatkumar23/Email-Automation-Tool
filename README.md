@@ -107,7 +107,7 @@ To use Gmail for sending emails:
 
 ## 👨‍💻 Author
 
-Venkat Kumar Meda - [GitHub](https://github.com/yourusername)
+Venkat Kumar Meda - [GitHub](https://github.com/venkatkumar23)
 
 ## 🙏 Acknowledgments
 
