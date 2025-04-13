@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Automation Tool</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-envelope-fill me-2"></i>
+                Email Automation Tool
+            </a>
+            <span class="navbar-text">
+                Computer Vision Job Applications
+            </span>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12 mb-4">
+                <div class="d-flex justify-content-center">
+                    <ul class="nav nav-pills nav-wizard">
+                        <li class="nav-item active" id="step1-tab">
+                            <a class="nav-link active" href="#step1">
+                                <div class="nav-pill-circle">1</div>
+                                <span>Upload Files</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" id="step2-tab">
+                            <a class="nav-link" href="#step2">
+                                <div class="nav-pill-circle">2</div>
+                                <span>Email Settings</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" id="step3-tab">
+                            <a class="nav-link" href="#step3">
+                                <div class="nav-pill-circle">3</div>
+                                <span>Review & Send</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Step 1: File Upload -->
+                <div class="card mb-4" id="step1">
+                    <div class="card-header">
+                        <h4>Upload Files</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="upload-form">
+                            <div class="mb-3">
+                                <label for="contacts-file" class="form-label">
+                                    <i class="bi bi-file-earmark-spreadsheet me-2"></i>
+                                    HR Contacts List (Excel/CSV)
+                                </label>
+                                <input type="file" class="form-control" id="contacts-file" accept=".xlsx,.xls,.csv" required>
+                                <div class="form-text">Upload your HR contacts file containing Name, Email, and Company columns.</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="resume-file" class="form-label">
+                                    <i class="bi bi-file-earmark-pdf me-2"></i>
+                                    Your Resume (PDF)
+                                </label>
+                                <input type="file" class="form-control" id="resume-file" accept=".pdf" required>
+                                <div class="form-text">Upload your resume that will be sent to all contacts.</div>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary" id="upload-btn">
+                                    Continue to Email Settings
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Step 2: Email Settings -->
+                <div class="card mb-4 d-none" id="step2">
+                    <div class="card-header">
+                        <h4>Email Settings</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="settings-form">
+                            <div class="mb-3">
+                                <label for="sender-email" class="form-label">Your Gmail Address</label>
+                                <input type="email" class="form-control" id="sender-email" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="app-password" class="form-label">Gmail App Password</label>
+                                <input type="password" class="form-control" id="app-password" required>
+                                <div class="form-text">
+                                    <i class="bi bi-info-circle me-1"></i>
+                                    Not your regular password. Generate an App Password in your Google Account settings.
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="email-subject" class="form-label">Email Subject</label>
+                                <input type="text" class="form-control" id="email-subject" value="Job Application - Computer Vision Engineer">
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label for="batch-size" class="form-label">Batch Size</label>
+                                    <input type="number" class="form-control" id="batch-size" min="1" value="50">
+                                    <div class="form-text">Emails per batch</div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label for="delay-between-emails" class="form-label">Delay Between Emails</label>
+                                    <input type="number" class="form-control" id="delay-between-emails" min="1" value="3">
+                                    <div class="form-text">Seconds</div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label for="delay-between-batches" class="form-label">Delay Between Batches</label>
+                                    <input type="number" class="form-control" id="delay-between-batches" min="1" value="15">
+                                    <div class="form-text">Minutes</div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <button type="button" class="btn btn-secondary" id="back-to-upload-btn">
+                                    Back
+                                </button>
+                                <button type="submit" class="btn btn-primary" id="continue-to-review-btn">
+                                    Continue to Review
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Step 3: Review & Send -->
+                <div class="card mb-4 d-none" id="step3">
+                    <div class="card-header">
+                        <h4>Review & Send</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <h5>Files</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="bg-light p-3 rounded mb-2">
+                                        <p class="mb-1 fw-bold">HR Contacts</p>
+                                        <p class="mb-0 text-muted" id="review-contacts-file">Not selected</p>
+                                        <p class="mb-0" id="review-contacts-count"></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="bg-light p-3 rounded mb-2">
+                                        <p class="mb-1 fw-bold">Resume</p>
+                                        <p class="mb-0 text-muted" id="review-resume-file">Not selected</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5>Email Settings</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="bg-light p-3 rounded mb-2">
+                                        <p class="mb-1 fw-bold">From</p>
+                                        <p class="mb-0 text-muted" id="review-sender-email"></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="bg-light p-3 rounded mb-2">
+                                        <p class="mb-1 fw-bold">Subject</p>
+                                        <p class="mb-0 text-muted" id="review-email-subject"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="bg-light p-3 rounded">
+                                        <p class="mb-1 fw-bold">Batch Size</p>
+                                        <p class="mb-0 text-muted" id="review-batch-size"></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="bg-light p-3 rounded">
+                                        <p class="mb-1 fw-bold">Delay (Emails)</p>
+                                        <p class="mb-0 text-muted" id="review-delay-between-emails"></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="bg-light p-3 rounded">
+                                        <p class="mb-1 fw-bold">Delay (Batches)</p>
+                                        <p class="mb-0 text-muted" id="review-delay-between-batches"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="progress-container" class="d-none mb-4">
+                            <h5>Progress</h5>
+                            <div class="progress mb-3" style="height: 20px;">
+                                <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" 
+                                    role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                            </div>
+                            
+                            <div class="row text-center">
+                                <div class="col-md-4">
+                                    <p class="fw-bold">Sent</p>
+                                    <p class="text-primary fw-bold" id="sent-count">0</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p class="fw-bold">Failed</p>
+                                    <p class="text-danger fw-bold" id="failed-count">0</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p class="fw-bold">Total</p>
+                                    <p class="fw-bold" id="total-count">0</p>
+                                </div>
+                            </div>
+                            
+                            <div id="sending-message" class="alert alert-info text-center">
+                                Sending emails... Please don't close this window.
+                            </div>
+                            
+                            <div id="complete-message" class="alert alert-success text-center d-none">
+                                <i class="bi bi-check-circle-fill me-2"></i>
+                                All emails have been processed!
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" id="back-to-settings-btn">
+                                Back
+                            </button>
+                            <button type="button" class="btn btn-primary" id="send-emails-btn">
+                                <i class="bi bi-send me-2"></i>
+                                Start Sending Emails
+                            </button>
+                        </div>
+                        
+                        <div class="mt-3 text-muted small">
+                            <p>
+                                <i class="bi bi-exclamation-circle me-1"></i>
+                                This will send emails to all contacts in your file. Make sure everything is correct before proceeding.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-light mt-5 py-3 border-top">
+        <div class="container text-center text-muted">
+            <p class="mb-0">© 2025 Venkat Kumar Meda | Email Automation Tool | All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
